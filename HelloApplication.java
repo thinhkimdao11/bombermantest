@@ -3,32 +3,17 @@ package mangobomb.bombermango;
 import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.app.GameSettings;
 import com.almasb.fxgl.app.scene.Viewport;
-import com.almasb.fxgl.core.math.FXGLMath;
-import com.almasb.fxgl.dsl.FXGL;
+import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.GameWorld;
 import com.almasb.fxgl.entity.level.Level;
 import com.almasb.fxgl.entity.level.text.TextLevelLoader;
 import com.almasb.fxgl.input.Input;
 import com.almasb.fxgl.pathfinding.CellState;
 import com.almasb.fxgl.pathfinding.astar.AStarGrid;
-import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
-import javafx.scene.Scene;
-import javafx.stage.Stage;
-import com.almasb.fxgl.entity.Entity;
-import com.almasb.fxgl.input.UserAction;
-import javafx.geometry.Point2D;
 import javafx.scene.input.KeyCode;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
-import javafx.scene.text.Text;
-import java.util.Map;
 
 import static com.almasb.fxgl.dsl.FXGL.*;
 import static mangobomb.bombermango.BombermanType.*;
-
-import java.io.IOException;
 
 public class HelloApplication extends GameApplication {
     public static final int WIDTH = 21;
@@ -38,6 +23,7 @@ public class HelloApplication extends GameApplication {
     public static final int SCREEN_HEIGHT = SCALED_SIZE * HEIGHT;
     public static final int ZOOM_RATIO = 3;
     public static final int DEFAULT_SIZE = 16;
+    // public boolean playing = false;
 
     public static Entity player;
     public static PlayerComponent playerComponent;
@@ -80,6 +66,8 @@ public class HelloApplication extends GameApplication {
         Viewport viewport = getGameScene().getViewport();
         viewport.bindToEntity(player, 200, 100);
         viewport.setBounds(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+
+        getSettings().setGlobalMusicVolume(0.1);
     }
 
     @Override
@@ -91,6 +79,16 @@ public class HelloApplication extends GameApplication {
         input.addAction(InputHandler.moveLeft, KeyCode.A);
         input.addAction(InputHandler.moveDown, KeyCode.S);
         input.addAction(InputHandler.implantBomb, KeyCode.F);
+        input.addAction(InputHandler.PlayMusic, KeyCode.M);
+
+//        FXGL.onKeyDown(KeyCode.M, "Play audio", () -> {
+//            if(!playing) {
+//                FXGL.play("gameaudio.wav");
+//                playing = true;
+//            } else {
+//                FXGL.
+//            }
+//        });
 
     }
 

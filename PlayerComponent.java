@@ -1,24 +1,20 @@
 package mangobomb.bombermango;
 
-import java.awt.*;
-import java.util.List;
-
+import com.almasb.fxgl.audio.Music;
 import com.almasb.fxgl.dsl.FXGL;
-import com.almasb.fxgl.pathfinding.CellMoveComponent;
-import com.almasb.fxgl.pathfinding.CellState;
-import com.almasb.fxgl.pathfinding.astar.AStarGrid;
-import com.almasb.fxgl.pathfinding.astar.AStarMoveComponent;
-import com.almasb.fxgl.entity.component.Component;
-import com.almasb.fxgl.entity.SpawnData;
 import com.almasb.fxgl.entity.Entity;
-import com.almasb.fxgl.physics.PhysicsComponent;
+import com.almasb.fxgl.entity.SpawnData;
+import com.almasb.fxgl.entity.component.Component;
+import com.almasb.fxgl.pathfinding.CellMoveComponent;
+import com.almasb.fxgl.pathfinding.astar.AStarMoveComponent;
 import com.almasb.fxgl.texture.AnimatedTexture;
 import com.almasb.fxgl.texture.AnimationChannel;
 import javafx.geometry.Point2D;
 import javafx.util.Duration;
 
-import static com.almasb.fxgl.dsl.FXGLForKtKt.*;
-import static com.almasb.fxgl.dsl.FXGLForKtKt.image;
+import java.util.List;
+
+import static com.almasb.fxgl.dsl.FXGL.*;
 
 public class PlayerComponent extends Component {
     public CellMoveComponent cell;
@@ -46,61 +42,106 @@ public class PlayerComponent extends Component {
         }, Duration.seconds(2));
     }
 
-
-    private PhysicsComponent physics;
     private AnimatedTexture texture;
-    private AnimationChannel PlayerWalk, PlayerIdle;
+    private AnimationChannel PlayerLeft, PlayerRight, PlayerIdle;
 
     public PlayerComponent() {
-        PlayerWalk = new AnimationChannel(List.of(
-                image("sprites/player_right.png"),
-                image("sprites/player_right_1.png"),
-                image("sprites/player_right_2.png")
-        ), Duration.seconds(0.5));
 
-        PlayerIdle = new AnimationChannel(List.of(
-                image("sprites/player_down.png"),
-                image("sprites/player_down.png"),
-                image("sprites/player_down.png")
-        ), Duration.seconds(0.5));
-
-        texture = new AnimatedTexture(PlayerWalk);
-        texture.loop();
     }
 
     @Override
     public void onAdded() {
-        entity.getTransformComponent().setScaleOrigin(new Point2D(16, 21));
-        entity.getViewComponent().addChild(texture);
+        PlayerRight = new AnimationChannel(List.of(
+                FXGL.image("sprites/player_right.png", 70, 48),
+                FXGL.image("sprites/player_right_1.png", 70, 48),
+                FXGL.image("sprites/player_right_2.png", 70, 48)
+        ), Duration.seconds(0.25));
+        PlayerIdle = new AnimationChannel(List.of(
+                FXGL.image("sprites/player_down.png", 70, 48),
+                FXGL.image("sprites/player_down_1.png", 70, 48),
+                FXGL.image("sprites/player_down_2.png", 70, 48)
+        ), Duration.seconds(0.25));
+        PlayerLeft = new AnimationChannel(List.of(
+                FXGL.image("sprites/player_left.png", 70, 48),
+                FXGL.image("sprites/player_left_1.png", 70, 48),
+                FXGL.image("sprites/player_left_2.png", 70, 48)
+        ), Duration.seconds(0.25));
 
+        texture = new AnimatedTexture(PlayerLeft);
+        texture.loop();
+        //entity.getTransformComponent().setScaleOrigin(new Point2D(24, 24));
+        entity.getViewComponent().addChild(texture);
+        entity.setScaleOrigin(new Point2D(24,24));
+        entity.setScaleX(1);
+        entity.setScaleY(1);
     }
 
     @Override
     public void onUpdate(double tpf) {
-        if (physics.isMovingX()) {
-            if (texture.getAnimationChannel() != PlayerWalk) {
-                texture.loopAnimationChannel(PlayerWalk);
+        if (cell.isMoving() || cell.isMovingRight()) {
+            if (texture.getAnimationChannel() != PlayerLeft) {
+                texture.loopAnimationChannel(PlayerLeft);
             }
         } else {
             if (texture.getAnimationChannel() != PlayerIdle) {
                 texture.loopAnimationChannel(PlayerIdle);
             }
         }
+
     }
 
     public void moveLeft() {
-        getEntity().setScaleX(-1);
-        physics.setVelocityX(-5);
+        getEntity().setScaleX(1);
+        astar.moveToLeftCell();
     }
     public void moveRight() {
-        getEntity().setScaleX(1);
-        physics.setVelocityX(5);
+        getEntity().setScaleX(-1);
+        astar.moveToRightCell();
     }
     public void moveUp() {
-        physics.setVelocityY(-5);
+        astar.moveToUpCell();
     }
     public void moveDown() {
-        physics.setVelocityY(5);
+        astar.moveToDownCell();
     }
 
+
+        String gameSong = new String("gameaudio.wav");
+        Music gameMusic = FXGL.getAssetLoader().loadMusic(gameSong);
+//    Media media = new Media("gameaudio.wav");
+//    MediaPlayer mediaPlayer = new MediaPlayer(media);
+//    MediaView mediaView = new MediaView(mediaPlayer);
+        boolean playing = false;
+
+
+    public void music() {
+        if (!playing) {
+            FXGL.getAudioPlayer().playMusic(gameMusic);
+//            mediaPlayer.play();
+            playing = true;
+        } //else {
+////            getAudioPlayer().stopMusic(gameMusic);
+////            mediaPlayer.pause();
+//            playing = false;
+//        }
+
+//        FXGL.getAudioPlayer().playMusic(gameMusic);
+//        FXGL.getAudioPlayer().stopMusic(gameMusic);
+
+//        Music gamemusic = getAssetLoader().loadMusic("gameaudio.wav");
+//        getAudioPlayer().playMusic(gamemusic);
+//        Boolean playing = false;
+//
+//
+//        if(!playing)
+//        {
+//            getAudioPlayer().playMusic(gamemusic);
+//            playing = true;
+//        }
+//        else{
+//            getAudioPlayer().stopMusic(gamemusic);
+//            playing = false;
+//        }
+
+    }
 }
