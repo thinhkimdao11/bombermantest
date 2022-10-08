@@ -69,7 +69,6 @@ public class PlayerComponent extends Component {
 
         texture = new AnimatedTexture(PlayerLeft);
         texture.loop();
-        //entity.getTransformComponent().setScaleOrigin(new Point2D(24, 24));
         entity.getViewComponent().addChild(texture);
         entity.setScaleOrigin(new Point2D(24,24));
         entity.setScaleX(1);
@@ -105,43 +104,18 @@ public class PlayerComponent extends Component {
         astar.moveToDownCell();
     }
 
-
         String gameSong = new String("gameaudio.wav");
         Music gameMusic = FXGL.getAssetLoader().loadMusic(gameSong);
-//    Media media = new Media("gameaudio.wav");
-//    MediaPlayer mediaPlayer = new MediaPlayer(media);
-//    MediaView mediaView = new MediaView(mediaPlayer);
         boolean playing = false;
-
 
     public void music() {
         if (!playing) {
             FXGL.getAudioPlayer().playMusic(gameMusic);
-//            mediaPlayer.play();
             playing = true;
-        } //else {
-////            getAudioPlayer().stopMusic(gameMusic);
-////            mediaPlayer.pause();
-//            playing = false;
-//        }
-
-//        FXGL.getAudioPlayer().playMusic(gameMusic);
-//        FXGL.getAudioPlayer().stopMusic(gameMusic);
-
-//        Music gamemusic = getAssetLoader().loadMusic("gameaudio.wav");
-//        getAudioPlayer().playMusic(gamemusic);
-//        Boolean playing = false;
-//
-//
-//        if(!playing)
-//        {
-//            getAudioPlayer().playMusic(gamemusic);
-//            playing = true;
-//        }
-//        else{
-//            getAudioPlayer().stopMusic(gamemusic);
-//            playing = false;
-//        }
+        } else {
+            FXGL.getAudioPlayer().stopMusic(gameMusic);
+            playing = false;
+        }
 
     }
 }

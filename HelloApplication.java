@@ -81,15 +81,6 @@ public class HelloApplication extends GameApplication {
         input.addAction(InputHandler.implantBomb, KeyCode.F);
         input.addAction(InputHandler.PlayMusic, KeyCode.M);
 
-//        FXGL.onKeyDown(KeyCode.M, "Play audio", () -> {
-//            if(!playing) {
-//                FXGL.play("gameaudio.wav");
-//                playing = true;
-//            } else {
-//                FXGL.
-//            }
-//        });
-
     }
 
     public void brickDestroyed(Entity brick) {

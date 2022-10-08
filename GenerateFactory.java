@@ -25,7 +25,7 @@ public class GenerateFactory implements EntityFactory {
 
     @Spawns("Player")
     public Entity newPlayer(SpawnData data) {
-//        play("gameaudio.wav");
+        play("gameaudio.wav");
 
         FXGL.<HelloApplication>getAppCast();
         return entityBuilder(data)
@@ -33,9 +33,6 @@ public class GenerateFactory implements EntityFactory {
                 .type(PLAYER)
                 .zIndex(10)
                 .scale(HelloApplication.ZOOM_RATIO, HelloApplication.ZOOM_RATIO)
-               // .with(physics)
-//                .with(new CollidableComponent(true))
-//                .with(new IrremovableComponent())
                 .with(new CellMoveComponent(SCALED_SIZE, SCALED_SIZE,150))
                 .with(new AStarMoveComponent(FXGL.<HelloApplication>getAppCast().getGrid()))
                 .with(new PlayerComponent())
